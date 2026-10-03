@@ -1,0 +1,19 @@
+# ===== 私密配置：永不提交 =====
+# 环境变量文件（数据库连接串、API 密钥等，Day 23 使用）
+.env
+.env.*
+!.env.example
+
+# ===== 密码与密钥文件 =====
+*.key
+*.pem
+secrets.json
+credentials.json
+
+# ===== 依赖目录（可随时重新安装，体积大）=====
+node_modules/
+
+# ===== 本地数据库文件 =====
+*.db
+*.sqlite
+*.sqlite3
