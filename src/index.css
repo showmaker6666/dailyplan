@@ -1,0 +1,619 @@
+/* dailyplan 基础样式（第 1 步：先保证干净可读） */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  background: #f5f6fa;
+  color: #2c2f3a;
+}
+
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.app-title {
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.app-subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #8a8f9c;
+}
+
+.today-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.today-date {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.today-title {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.today-placeholder {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #b0b4bf;
+  text-align: center;
+  padding: 24px 0;
+  border: 1px dashed #d9dbe3;
+  border-radius: 8px;
+}
+
+/* ---------- 第 2 步新增：核心闭环样式 ---------- */
+
+/* 存储失败提示（TECH_DESIGN 第六章：不静默丢数据） */
+.storage-error {
+  background: #fdecea;
+  color: #b3261e;
+  border: 1px solid #f5c6c2;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* 进度条 */
+.progress-area {
+  margin-top: 14px;
+}
+
+.progress-text {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.progress-num {
+  color: #4f6ef7;
+  font-weight: bold;
+}
+
+.progress-percent {
+  color: #9aa0ac;
+}
+
+.progress-track {
+  margin-top: 6px;
+  height: 8px;
+  background: #eceef3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f6ef7, #6f9ff7);
+  border-radius: 4px;
+  transition: width 0.25s ease;
+}
+
+/* 快速添加 */
+.quick-add {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.quick-add-input {
+  flex: 1;
+  border: 1px solid #d9dbe3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.quick-add-input:focus {
+  border-color: #4f6ef7;
+}
+
+.quick-add-btn {
+  border: none;
+  background: #4f6ef7;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.quick-add-btn:disabled {
+  background: #c9d2f9;
+  cursor: not-allowed; /* 标题为空时置灰不可点 */
+}
+
+/* 任务列表 */
+.task-list {
+  list-style: none;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #eceef3;
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.task-item input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-title {
+  flex: 1;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+/* 打勾后的视觉反馈：划线 + 变灰（PRD 验收第 5 条） */
+.task-item.done .task-title {
+  text-decoration: line-through;
+  color: #b0b4bf;
+}
+
+.task-delete {
+  border: none;
+  background: transparent;
+  color: #b0b4bf;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.task-delete:hover {
+  color: #e5484d;
+  background: #fdecea;
+}
+
+/* ---------- 第 3 步新增：视图切换 / 时间块 / 添加页表单 / 底部导航 ---------- */
+
+/* 视图切换条 */
+.view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.toggle-btn {
+  border: 1px solid #d9dbe3;
+  background: #fff;
+  color: #6b7280;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.toggle-btn.active {
+  background: #4f6ef7;
+  border-color: #4f6ef7;
+  color: #fff;
+}
+
+/* 今日页右上角 "+" 添加入口（PRD 4.1） */
+.add-entry-btn {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #4f6ef7;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.add-entry-btn:hover {
+  background: #3d5ce0;
+}
+
+/* 清单里显示的开始时间角标 */
+.task-time {
+  font-size: 12px;
+  color: #8a8f9c;
+  background: #f0f2f8;
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+/* 时间块视图 */
+.time-block-area {
+  margin-top: 16px;
+}
+
+.block-section-hint {
+  font-size: 12px;
+  color: #9aa0ac;
+  margin: 12px 0 6px;
+}
+
+.time-block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-left: 4px solid #4f6ef7;
+  background: #f0f4ff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.time-block.plain {
+  border-left-color: #c9d2f9;
+  background: #f7f8fc;
+}
+
+.time-block.done {
+  opacity: 0.55;
+}
+
+.block-time {
+  font-size: 13px;
+  font-weight: bold;
+  color: #4f6ef7;
+  font-variant-numeric: tabular-nums;
+}
+
+.time-block.plain .block-title::before {
+  content: ' ⌛ ';
+  opacity: 0.6;
+}
+
+.block-title {
+  font-size: 14px;
+  flex: 1;
+  min-width: 120px;
+  word-break: break-all;
+}
+
+.time-block.done .block-title {
+  text-decoration: line-through;
+}
+
+.block-meta {
+  font-size: 12px;
+  color: #8a8f9c;
+  white-space: nowrap;
+}
+
+/* 添加任务页表单 */
+.form-area {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.required {
+  color: #e5484d;
+}
+
+.optional {
+  color: #9aa0ac;
+  font-size: 12px;
+}
+
+.form-input {
+  margin-top: 6px;
+  border: 1px solid #d9dbe3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.form-input:focus {
+  border-color: #4f6ef7;
+}
+
+.form-input:disabled {
+  background: #f0f2f8;
+  color: #8a8f9c;
+}
+
+.field-error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e5484d;
+}
+
+.form-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  border: none;
+  background: #4f6ef7;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 26px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background: #c9d2f9;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  border: 1px solid #d9dbe3;
+  background: #fff;
+  color: #4b5563;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 底部导航 */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  background: #ffffff;
+  border-top: 1px solid #eceef3;
+  padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+  z-index: 10;
+}
+
+.nav-item {
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: #8a8f9c;
+  cursor: pointer;
+  padding: 4px 14px;
+  border-radius: 8px;
+}
+
+.nav-item.active {
+  color: #4f6ef7;
+}
+
+.nav-item:disabled {
+  color: #c9cdd8;
+  cursor: not-allowed;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+/* 给底部导航让出空间，内容不被遮住 */
+.container {
+  padding-bottom: 76px;
+}
+
+/* ---------- 第 4 步新增：统计页 / 设置页 ---------- */
+
+/* 统计指标卡片 */
+.stats-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  background: #f0f4ff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4f6ef7;
+}
+
+.stat-unit {
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 2px;
+}
+
+.stat-label {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.stat-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #9aa0ac;
+}
+
+.section-title {
+  margin-top: 24px;
+  font-size: 16px;
+}
+
+/* 心情三选一 */
+.mood-row {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.mood-btn {
+  border: 1px solid #d9dbe3;
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mood-btn.active {
+  border-color: #4f6ef7;
+  background: #f0f4ff;
+  box-shadow: 0 0 0 2px rgba(79, 110, 247, 0.2);
+}
+
+.mood-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.review-note {
+  margin-top: 12px;
+  border: 1px solid #d9dbe3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  width: 100%;
+}
+
+.review-note:focus {
+  border-color: #4f6ef7;
+}
+
+.saved-tip {
+  font-size: 13px;
+  color: #46a758;
+  align-self: center;
+}
+
+/* 设置页 */
+.settings-item {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+
+.settings-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.settings-name.danger {
+  color: #e5484d;
+}
+
+.settings-desc {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #8a8f9c;
+}
+
+.confirm-group {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-danger {
+  border: none;
+  background: #e5484d;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-danger-outline {
+  border: 1px solid #f0b7b5;
+  background: #fff;
+  color: #e5484d;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-danger-outline:hover {
+  background: #fdecea;
+}
+
+.settings-msg {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #46a758;
+}
+
+.settings-msg.error {
+  color: #e5484d;
+}
+
+.settings-footnote {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #9aa0ac;
+  text-align: center;
+}
