@@ -170,6 +170,18 @@ export function saveReview(date, mood, note) {
   return saveReviews(reviews)
 }
 
+// ---------- mock 演示注入（Day 8；Day 23 可删） ----------
+
+// 一键注入演示假任务：合并进现有任务，同标题不重复添加，不动你的真实数据
+export function fillMockTasks(mockTasks) {
+  const tasks = loadTasks()
+  const titles = new Set(tasks.map(t => t.title))
+  const additions = mockTasks.filter(t => !titles.has(t.title))
+  if (additions.length === 0) return { ok: true, added: 0 }
+  const result = saveTasks([...tasks, ...additions])
+  return { ok: result.ok, added: additions.length }
+}
+
 // ---------- 设置页用（导出 / 清空） ----------
 
 export function exportAllData() {

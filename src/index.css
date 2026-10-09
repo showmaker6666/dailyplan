@@ -617,3 +617,115 @@ header {
   color: #9aa0ac;
   text-align: center;
 }
+
+/* ---------- Day 8 新增：加载中骨架屏 / 错误态 / 响应式 ---------- */
+
+/* 加载中：灰色占位块 + 呼吸闪烁，真实场景一闪而过，?demo=loading 可常驻查看 */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+
+.skeleton-area {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 7px;
+  background: #dfe3ec;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton-line.short {
+  width: 45%;
+}
+
+.skeleton-block {
+  height: 44px;
+  border-radius: 8px;
+  background: #e8ebf3;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+/* 错误态：读取失败的提示 + 重试按钮 */
+.state-error {
+  margin-top: 16px;
+  border: 1px solid #f5c6c2;
+  background: #fdecea;
+  border-radius: 10px;
+  padding: 24px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.state-error-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #b3261e;
+}
+
+.state-error-hint {
+  font-size: 13px;
+  color: #8a5a55;
+  line-height: 1.6;
+}
+
+.state-error .btn-primary {
+  margin-top: 4px;
+}
+
+/* 响应式：手机宽度（≤480px）下收紧留白和字号，保证不散架 */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px 10px 76px;
+  }
+
+  .app-title {
+    font-size: 22px;
+  }
+
+  header {
+    margin-bottom: 12px;
+  }
+
+  .today-card {
+    padding: 16px 14px;
+    border-radius: 10px;
+  }
+
+  .today-title {
+    font-size: 17px;
+  }
+
+  .quick-add {
+    flex-wrap: wrap; /* 输入框太长时允许换行，按钮不被挤变形 */
+  }
+
+  .quick-add-input {
+    min-width: 0; /* flex 子项允许收缩，防止撑破容器 */
+  }
+
+  .task-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .time-block {
+    padding: 10px;
+  }
+
+  .block-meta {
+    white-space: normal; /* 手机上元信息允许换行，不横向溢出 */
+  }
+
+  .nav-item {
+    padding: 4px 10px;
+  }
+}

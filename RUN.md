@@ -81,9 +81,24 @@ dailyplan/
 │   ├── components/
 │   │   └── Navbar.jsx        # 底部导航
 │   └── storage/
-│       └── localStore.js     # 唯一数据出口（Day 23 换数据库只改它）
+│       ├── localStore.js     # 唯一数据出口（Day 23 换数据库只改它）
+│       └── mockData.js       # 演示假数据（Day 8 加，Day 23 可删）
 └── node_modules/         # 依赖（不入库，npm install 生成）
 ```
+
+## 八点五、演示模式（Day 8 加）
+
+今日页支持用地址栏参数查看四种页面状态和假数据，验收/截图专用：
+
+| 在地址栏输 | 看到什么 |
+|---|---|
+| `http://localhost:5173/` | 正常页面（成功态/空态按你的真实数据自动出现） |
+| `http://localhost:5173/?demo=loading` | **加载中**骨架屏常驻（localStorage 同步读、无真实加载，Day 23 接 API 后变真状态） |
+| `http://localhost:5173/?demo=error` | **错误态**：读取失败提示 + 重试按钮 |
+| `http://localhost:5173/?demo=mock` | **成功态 + 假数据**：一键注入 6 条演示任务（合并写入，同标题不重复，**不动你的真实数据**） |
+
+- 演示任务是**真任务**（存在 localStorage 里），不想要了：逐条 ✕ 删，或设置页清空（会把真实数据一起清，慎用）；
+- 把 `?demo=...` 从地址栏去掉即恢复正常模式。
 
 ## 八、后续版本预告
 
@@ -92,4 +107,4 @@ dailyplan/
 
 ---
 
-*存档于 Day 7 ｜ 有新坑随时往第六节补*
+*存档于 Day 7 ｜ Day 8 补充演示模式（第八点五节）｜ 有新坑随时往第六节补*
