@@ -30,7 +30,7 @@ header {
 .app-subtitle {
   margin-top: 4px;
   font-size: 14px;
-  color: #8a8f9c;
+  color: #6b7280;
 }
 
 .today-card {
@@ -53,7 +53,7 @@ header {
 .today-placeholder {
   margin-top: 16px;
   font-size: 14px;
-  color: #b0b4bf;
+  color: #6b7280;
   text-align: center;
   padding: 24px 0;
   border: 1px dashed #d9dbe3;
@@ -69,7 +69,7 @@ header {
   border: 1px solid #f5c6c2;
   border-radius: 8px;
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 12px;
 }
 
@@ -79,8 +79,8 @@ header {
 }
 
 .progress-text {
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 14px;
+  color: #4b5563;
 }
 
 .progress-num {
@@ -89,7 +89,7 @@ header {
 }
 
 .progress-percent {
-  color: #9aa0ac;
+  color: #6b7280;
 }
 
 .progress-track {
@@ -142,6 +142,10 @@ header {
   cursor: not-allowed; /* 标题为空时置灰不可点 */
 }
 
+.quick-add-btn:hover:not(:disabled) {
+  background: #3d5ce0;
+}
+
 /* 任务列表 */
 .task-list {
   list-style: none;
@@ -184,13 +188,13 @@ header {
 /* 打勾后的视觉反馈：划线 + 变灰（PRD 验收第 5 条） */
 .task-item.done .task-title {
   text-decoration: line-through;
-  color: #b0b4bf;
+  color: #8a8f9c;
 }
 
 .task-delete {
   border: none;
   background: transparent;
-  color: #b0b4bf;
+  color: #9aa0ac;
   font-size: 14px;
   cursor: pointer;
   padding: 4px 6px;
@@ -219,13 +223,25 @@ header {
   color: #6b7280;
   border-radius: 20px;
   padding: 5px 14px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
+}
+
+.toggle-btn:hover {
+  border-color: #4f6ef7;
+  color: #4f6ef7;
+  background: #f5f6ff;
 }
 
 .toggle-btn.active {
   background: #4f6ef7;
   border-color: #4f6ef7;
+  color: #fff;
+}
+
+.toggle-btn.active:hover {
+  background: #3d5ce0;
+  border-color: #3d5ce0;
   color: #fff;
 }
 
@@ -250,7 +266,7 @@ header {
 /* 清单里显示的开始时间角标 */
 .task-time {
   font-size: 12px;
-  color: #8a8f9c;
+  color: #6b7280;
   background: #f0f2f8;
   border-radius: 4px;
   padding: 2px 6px;
@@ -264,7 +280,7 @@ header {
 
 .block-section-hint {
   font-size: 12px;
-  color: #9aa0ac;
+  color: #6b7280;
   margin: 12px 0 6px;
 }
 
@@ -290,7 +306,7 @@ header {
 }
 
 .block-time {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   color: #4f6ef7;
   font-variant-numeric: tabular-nums;
@@ -314,7 +330,7 @@ header {
 
 .block-meta {
   font-size: 12px;
-  color: #8a8f9c;
+  color: #6b7280;
   white-space: nowrap;
 }
 
@@ -327,7 +343,7 @@ header {
 
 .form-label {
   margin-top: 14px;
-  font-size: 13px;
+  font-size: 14px;
   color: #4b5563;
 }
 
@@ -387,6 +403,10 @@ header {
   cursor: not-allowed;
 }
 
+.btn-primary:hover:not(:disabled) {
+  background: #3d5ce0;
+}
+
 .btn-secondary {
   border: 1px solid #d9dbe3;
   background: #fff;
@@ -395,6 +415,12 @@ header {
   padding: 10px 20px;
   font-size: 14px;
   cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: #4f6ef7;
+  color: #4f6ef7;
+  background: #f5f6ff;
 }
 
 /* 底部导航 */
@@ -419,7 +445,7 @@ header {
   align-items: center;
   gap: 2px;
   font-size: 12px;
-  color: #8a8f9c;
+  color: #6b7280;
   cursor: pointer;
   padding: 4px 14px;
   border-radius: 8px;
@@ -474,14 +500,14 @@ header {
 
 .stat-label {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 14px;
   color: #4b5563;
 }
 
 .stat-sub {
   margin-top: 2px;
   font-size: 12px;
-  color: #9aa0ac;
+  color: #6b7280;
 }
 
 .section-title {
@@ -537,7 +563,7 @@ header {
 }
 
 .saved-tip {
-  font-size: 13px;
+  font-size: 14px;
   color: #46a758;
   align-self: center;
 }
@@ -567,7 +593,7 @@ header {
 .settings-desc {
   margin-top: 4px;
   font-size: 12px;
-  color: #8a8f9c;
+  color: #6b7280;
 }
 
 .confirm-group {
@@ -584,6 +610,10 @@ header {
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #c33a3f;
 }
 
 .btn-danger-outline {
@@ -603,7 +633,7 @@ header {
 
 .settings-msg {
   margin-top: 14px;
-  font-size: 13px;
+  font-size: 14px;
   color: #46a758;
 }
 
@@ -614,7 +644,7 @@ header {
 .settings-footnote {
   margin-top: 20px;
   font-size: 12px;
-  color: #9aa0ac;
+  color: #6b7280;
   text-align: center;
 }
 
@@ -672,7 +702,7 @@ header {
 }
 
 .state-error-hint {
-  font-size: 13px;
+  font-size: 14px;
   color: #8a5a55;
   line-height: 1.6;
 }
@@ -701,7 +731,7 @@ header {
   }
 
   .today-title {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .quick-add {
