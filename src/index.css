@@ -170,6 +170,7 @@ header {
   height: 18px;
   cursor: pointer;
   flex-shrink: 0;
+  accent-color: #4f6ef7; /* 勾选后为主题蓝，替代系统默认黑色（Day 10 反馈增强） */
 }
 
 .priority-dot {
@@ -189,6 +190,12 @@ header {
 .task-item.done .task-title {
   text-decoration: line-through;
   color: #8a8f9c;
+}
+
+/* 打勾反馈增强：已完成整行加极淡主题蓝底，完成的瞬间整行有变化（Day 10） */
+.task-item.done {
+  background: #f3f5fd;
+  border-color: #dce1f8;
 }
 
 .task-delete {
