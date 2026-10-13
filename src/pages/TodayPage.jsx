@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   todayStr,
   loadTasks,
@@ -43,6 +43,11 @@ function TodayPage({ goAdd }) {
   const [storageError, setStorageError] = useState(false)
   const [view, setView] = useState('list') // 'list' 清单 | 'block' 时间块
 
+  // Day 11 交互反馈：添加成功的"✓ 已添加"提示（1.5 秒自动消失）+ 操作中防连点锁
+  const [addedFlash, setAddedFlash] = useState(false)
+  const [adding, setAdding] = useState(false) // 250ms 短锁：本地写入瞬时，这个锁给 Day 23 异步请求预演
+  const flashTimer = useRef(null) // 成功提示的倒计时句柄，连续添加时用它重置
+
   useEffect(() => {
     if (DEMO === 'loading') return // 演示：骨架屏常驻
     if (DEMO === 'error') {
@@ -65,12 +70,29 @@ function TodayPage({ goAdd }) {
     setStorageError(result ? !result.ok : false)
   }
 
+  // 组件卸载时清掉计时器，不留垃圾（Day 11）
+  useEffect(() => () => {
+    if (flashTimer.current) clearTimeout(flashTimer.current)
+  }, [])
+
   function handleAdd() {
     const title = input.trim()
-    if (!title) return
+    if (!title || adding) return // adding 期间连点/连按回车不重复添加
+    setAdding(true)
+    setTimeout(() => setAdding(false), 250)
     const result = addTask(title)
     refresh(result)
-    if (result.ok) setInput('')
+    if (result.ok) {
+      setInput('')
+      showAddedFlash()
+    }
+  }
+
+  // 成功反馈：绿字滑入，1.5 秒后自动消失；连续添加时重置倒计时（提示不被旧计时器提前掐掉）
+  function showAddedFlash() {
+    setAddedFlash(true)
+    if (flashTimer.current) clearTimeout(flashTimer.current)
+    flashTimer.current = setTimeout(() => setAddedFlash(false), 1500)
   }
 
   function handleKeyDown(e) {
@@ -184,11 +206,12 @@ function TodayPage({ goAdd }) {
             <button
               className="quick-add-btn"
               onClick={handleAdd}
-              disabled={!input.trim()}
+              disabled={!input.trim() || adding}
             >
               添加
             </button>
           </div>
+          {addedFlash && <p className="add-flash">✓ 已添加</p>}
 
           {/* ---------- 清单视图 ---------- */}
           {view === 'list' &&
