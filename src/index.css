@@ -259,6 +259,14 @@ header {
   background: #f5f6ff;
 }
 
+/* Day 12 状态筛选栏：间距走 8px 网格（Skill 一.3），按钮复用 toggle-btn（对比度/字号/hover 均已合规） */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap; /* 窄屏放不下就换行，不许横向滚动（Skill 一.5） */
+}
+
 .toggle-btn.active {
   background: #4f6ef7;
   border-color: #4f6ef7;
@@ -779,6 +787,13 @@ header {
 
   .block-meta {
     white-space: normal; /* 手机上元信息允许换行，不横向溢出 */
+  }
+
+  /* Day 12：筛选按钮加高到 40px 触控目标（Skill 一.5：触控目标 ≥40px） */
+  .filter-bar .toggle-btn {
+    padding: 8px 16px;
+    min-height: 40px;
+    box-sizing: border-box;
   }
 
   .nav-item {

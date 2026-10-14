@@ -42,6 +42,8 @@ function TodayPage({ goAdd }) {
   const [input, setInput] = useState('')
   const [storageError, setStorageError] = useState(false)
   const [view, setView] = useState('list') // 'list' 清单 | 'block' 时间块
+  // Day 12 状态筛选：纯视图状态，不碰数据层（Skill 三.1）
+  const [filter, setFilter] = useState('all') // 'all' 全部 | 'todo' 待办 | 'done' 已完成
 
   // Day 11 交互反馈：添加成功的"✓ 已添加"提示（1.5 秒自动消失）+ 操作中防连点锁
   const [addedFlash, setAddedFlash] = useState(false)
@@ -117,11 +119,20 @@ function TodayPage({ goAdd }) {
       ? 0
       : Math.round((doneCount / todayTasks.length) * 100)
 
-  // 时间块视图的数据：有 start_time 的按时段排，没有的进"未安排"
-  const scheduled = sorted
+  // Day 12 状态筛选：只影响"显示哪些"，进度条仍统计全天总量（不破坏已有功能，Skill 禁止事项 2）
+  const filtered = sorted.filter(t =>
+    filter === 'all'
+      ? true
+      : filter === 'todo'
+        ? t.status !== '已完成'
+        : t.status === '已完成'
+  )
+
+  // 时间块视图的数据：有 start_time 的按时段排，没有的进"未安排"（同样吃筛选结果）
+  const scheduled = filtered
     .filter(t => t.start_time)
     .sort((a, b) => (a.start_time < b.start_time ? -1 : 1))
-  const unscheduled = sorted.filter(t => !t.start_time)
+  const unscheduled = filtered.filter(t => !t.start_time)
 
   return (
     <section className="today-card">
@@ -151,6 +162,28 @@ function TodayPage({ goAdd }) {
         </button>
         <button className="add-entry-btn" onClick={goAdd} title="添加任务">
           +
+        </button>
+      </div>
+
+      {/* Day 12 状态筛选：选中态用蓝色实底明示当前筛选（Skill 二.1：操作前让用户知道"现在在哪"） */}
+      <div className="filter-bar">
+        <button
+          className={filter === 'all' ? 'toggle-btn active' : 'toggle-btn'}
+          onClick={() => setFilter('all')}
+        >
+          全部
+        </button>
+        <button
+          className={filter === 'todo' ? 'toggle-btn active' : 'toggle-btn'}
+          onClick={() => setFilter('todo')}
+        >
+          待办
+        </button>
+        <button
+          className={filter === 'done' ? 'toggle-btn active' : 'toggle-btn'}
+          onClick={() => setFilter('done')}
+        >
+          已完成
         </button>
       </div>
 
@@ -215,13 +248,18 @@ function TodayPage({ goAdd }) {
 
           {/* ---------- 清单视图 ---------- */}
           {view === 'list' &&
-            (sorted.length === 0 ? (
+            (filtered.length === 0 ? (
+              /* 空态不是空白（Skill 二.4）：区分"整天没任务"和"筛选后没结果"两种情况 */
               <p className="today-placeholder">
-                今天还没有任务，点右上角 + 或在上面输入框加一条吧
+                {sorted.length === 0
+                  ? '今天还没有任务，点右上角 + 或在上面输入框加一条吧'
+                  : filter === 'todo'
+                    ? '没有待办任务了，今天的任务都完成了 👍'
+                    : '还没有已完成的任务，打勾一条试试'}
               </p>
             ) : (
               <ul className="task-list">
-                {sorted.map(task => (
+                {filtered.map(task => (
                   <li
                     key={task.id}
                     className={
@@ -257,8 +295,14 @@ function TodayPage({ goAdd }) {
           {/* ---------- 时间块视图 ---------- */}
           {view === 'block' && (
             <div className="time-block-area">
-              {sorted.length === 0 ? (
-                <p className="today-placeholder">没有任务可排</p>
+              {filtered.length === 0 ? (
+                <p className="today-placeholder">
+                  {sorted.length === 0
+                    ? '没有任务可排'
+                    : filter === 'todo'
+                      ? '没有待办任务了，今天的任务都完成了 👍'
+                      : '还没有已完成的任务，打勾一条试试'}
+                </p>
               ) : (
                 <>
                   {scheduled.length === 0 && (
